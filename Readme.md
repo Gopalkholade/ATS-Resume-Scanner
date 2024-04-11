@@ -39,3 +39,5 @@ The Streamlit app (app.py) provides a user interface for uploading resumes (PDF 
 
 Tell Me About the Resume: Evaluates the resume and provides a professional evaluation against the job description.
 Percentage Match: Calculates the percentage match of the resume with the job description and lists missing keywords and final thoughts.
+
+## Happy Experimenting😊
