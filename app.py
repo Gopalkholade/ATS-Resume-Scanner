@@ -14,16 +14,25 @@ uploaded_file=st.file_uploader("Upload your resume(PDF)...",type=["pdf"])
 if uploaded_file is not None:
     st.write("PDF Uploaded Successfully")
 
+col1, col2, col3 = st.columns(3,gap="medium")
 
-submit1 = st.button("Tell Me About the Resume")
+with col1:
+    submit1 = st.button("Tell Me About the Resume")
 
+with col2:
+    submit2 = st.button("Get Keywods")
 
-submit3 = st.button("Percentage match")
+with col3:
+    submit3 = st.button("Percentage match")
 
 input_prompt1 = """
  You are an experienced Technical Human Resource Manager,your task is to review the provided resume against the job description. 
   Please share your professional evaluation on whether the candidate's profile aligns with the role. 
  Highlight the strengths and weaknesses of the applicant in relation to the specified job requirements.
+"""
+
+input_prompt2 = """
+As an **expert ATS (Applicant Tracking System) scanner** with an in-depth understanding of AI and ATS functionality, your task is to evaluate a resume against a provided job description. Please identify the **specific skills and keywords** necessary to maximize the impact of the resume.
 """
 
 input_prompt3 = """
@@ -36,6 +45,15 @@ if submit1:
     if uploaded_file is not None:
         pdf_content=input_pdf_setup(uploaded_file)
         response=get_gemini_response(input_prompt1,pdf_content,input_text)
+        st.subheader("The Repsonse is")
+        st.write(response)
+    else:
+        st.write("Please uplaod the resume")
+
+elif submit2:
+    if uploaded_file is not None:
+        pdf_content=input_pdf_setup(uploaded_file)
+        response=get_gemini_response(input_prompt2,pdf_content,input_text)
         st.subheader("The Repsonse is")
         st.write(response)
     else:
