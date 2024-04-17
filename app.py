@@ -1,6 +1,6 @@
 #importing libraries
 import streamlit as st
-from helper_func import input_pdf_setup, get_gemini_response
+from helper_func import input_pdf_setup, get_gemini_response, get_gemini_response_keywords
 
 
 ## Streamlit App
@@ -32,13 +32,15 @@ input_prompt1 = """
 """
 
 input_prompt2 = """
-As an **expert ATS (Applicant Tracking System) scanner** with an in-depth understanding of AI and ATS functionality, your task is to evaluate a resume against a provided job description. Please identify the **specific skills and keywords** necessary to maximize the impact of the resume.
-"""
+As an expert ATS (Applicant Tracking System) scanner with an in-depth understanding of AI and ATS functionality, 
+your task is to evaluate a resume against a provided job description. Please identify the specific skills and keywords 
+necessary to maximize the impact of the resume and provide responde in json format as {Technical Skills:[], Analytical Skills:[], Soft Skills:[]}.
+Note: Please do not make up the answer only answer from job description provided"""
 
 input_prompt3 = """
 You are an skilled ATS (Applicant Tracking System) scanner with a deep understanding of data science and ATS functionality, 
 your task is to evaluate the resume against the provided job description. give me the percentage of match if the resume matches
-the job description. First the output should come as percentage and then keywords missing and last final thoughts.
+the job description. First the output should come as percentage and then keywords missing and last final thoughts. 
 """
 
 if submit1:
@@ -53,9 +55,13 @@ if submit1:
 elif submit2:
     if uploaded_file is not None:
         pdf_content=input_pdf_setup(uploaded_file)
-        response=get_gemini_response(input_prompt2,pdf_content,input_text)
-        st.subheader("The Repsonse is")
-        st.write(response)
+        response=get_gemini_response_keywords(input_prompt2,pdf_content,input_text)
+        print(response)
+        st.subheader("Skills are:")
+        if response != None:
+            st.write(f"Technical Skills: {', '.join(response['Technical Skills'])}.")
+            st.write(f"Analytical Skills: {', '.join(response['Analytical Skills'])}.")
+            st.write(f"Soft Skills: {', '.join(response['Soft Skills'])}.")
     else:
         st.write("Please uplaod the resume")
 
